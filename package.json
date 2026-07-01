@@ -1,0 +1,9 @@
+{
+  "name": "smart-waste-vercel",
+  "version": "1.0.0",
+  "description": "Application PWA de signalement des déchets à Douala",
+  "main": "index.html",
+  "dependencies": {
+    "mysql2": "^3.11.0"
+  }
+}

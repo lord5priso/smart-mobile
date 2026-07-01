@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Waste - Carte</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; }
+        #map { height: 100vh; width: 100%; z-index: 1; }
+        
+        .btn-signal {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 999; background: #00b894; color: white; border: none;
+            padding: 15px 30px; border-radius: 50px; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;
+        }
+
+        /* Modale */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #1e293b; color: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; }
+        textarea { width: 100%; height: 80px; margin: 10px 0; border-radius: 8px; border: none; padding: 10px; }
+        .btn-submit { width: 100%; padding: 12px; background: #00b894; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<button class="btn-signal" onclick="ouvrirFormulaireSignalement()"><i class="fa-solid fa-plus"></i> Signaler</button>
+
+<div id="modalSignalement" class="modal">
+    <div class="modal-content">
+        <h3>Signaler un déchet</h3>
+        <input type="text" id="fieldMairie" readonly style="width:100%; padding:8px; border-radius:5px; border:none; margin-bottom:10px;">
+        <textarea id="fieldDescription" placeholder="Description du dépôt..."></textarea>
+        <input type="file" id="photoCapture" accept="image/*" capture="environment" onchange="afficherApercuPhoto(this)" style="margin-bottom:15px;">
+        <img id="photoPreview" style="display:none; width:100%; border-radius:8px; margin-bottom:15px;">
+        <button class="btn-submit" onclick="soumettreFormulaire()">Valider le signalement</button>
+        <button onclick="fermerFormulaire()" style="background:none; border:none; color:white; width:100%; margin-top:10px;">Annuler</button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
