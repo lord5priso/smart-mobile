@@ -11,10 +11,10 @@ export default async function handler(req, res) {
         // 1. Connexion à la base de données cloud Aiven
         // Remplis ici avec tes identifiants Aiven uniques
         const connection = await mysql.createConnection({
-            host: 'PROVENANCE_DE_TON_ACCÈS_AIVEN.aivencloud.com',
-            port: 11374,
+            host: 'mysql-20b10a5-smartwaste-fb237.a.aivencloud.com',
+            port: 15667,
             user: 'avnadmin',
-            password: 'TON_MOT_DE_PASSE_AIVEN',
+            password: 'AVNS_Jyu7rxxl9c9ZMlRQ3om',
             database: 'defaultdb',
             ssl: { rejectUnauthorized: false } // Obligatoire pour Aiven
         });
