@@ -114,9 +114,10 @@ function afficherApercuPhoto(input) {
 }
 
 // ==========================================
-// 4. CONVERSION ET ENVOI SUR L'API VERCEL (JSON)
+// 4. CONVERSION, COMPRESSION ET ENVOI SUR VERCEL
 // ==========================================
 
+// Fonction modifiée : Compresse et redimensionne via Canvas pour respecter la limite de Vercel (< 4.5 Mo)
 function convertirEnBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -125,12 +126,11 @@ function convertirEnBase64(file) {
             const img = new Image();
             img.src = event.target.result;
             img.onload = () => {
-                // Création d'un canvas pour redimensionner l'image
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
 
-                // Limite maximale de résolution (ex: 1024px maximum pour le plus grand côté)
+                // Limite haute de résolution (1024px maximum pour le côté le plus grand)
                 const MAX_WIDTH = 1024;
                 const MAX_HEIGHT = 1024;
 
@@ -149,17 +149,17 @@ function convertirEnBase64(file) {
                 canvas.width = width;
                 canvas.height = height;
 
-                // Dessin de l'image réduite dans le canvas
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Compression en JPEG avec une qualité de 70% (0.7)
+                // Compression au format JPEG avec une qualité de 70%
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
                 resolve(dataUrl);
             };
         };
         reader.onerror = error => reject(error);
     });
+}
 
 async function soumettreFormulaire() {
     let desc = document.getElementById('fieldDescription').value.trim();
@@ -175,7 +175,7 @@ async function soumettreFormulaire() {
     }
 
     try {
-        // 1. Conversion de la photo en texte Base64
+        // 1. Conversion et compression automatique de la photo en texte Base64 léger
         const photoBase64 = await convertirEnBase64(fichierPhotoSelectionne);
 
         // 2. Préparation de l'objet de données
@@ -230,7 +230,6 @@ async function voterPourDechet(id) {
 }
 
 function chargerSignalements() {
-    // Interroge l'API JavaScript au lieu de l'ancien script PHP
     fetch('/api/get_reports')
     .then(res => res.json())
     .then(data => {
@@ -252,7 +251,6 @@ function chargerSignalements() {
                 fillOpacity: 0.8 
             }).addTo(map);
             
-            // L'image étant du Base64, on l'injecte directement dans la balise img
             let htmlPhoto = report.photo ? `<br><img src="${report.photo}" style="width:100%; max-width:200px; border-radius:8px; margin-top:8px; display:block;">` : "";
 
             circle.bindPopup(`
@@ -277,4 +275,4 @@ chargerSignalements();
 
 // Rafraîchissement automatique de la carte toutes les 15 secondes
 setInterval(chargerSignalements, 15000);
-
+        
