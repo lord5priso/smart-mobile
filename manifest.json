@@ -3,7 +3,7 @@
   "name": "Smart Waste",
       "icons": [
     {
-      "src": "logo.jpg",
+      "src": "icône.png",
       "type": "image/png",
       "sizes": "512x512"
     }
